@@ -1,0 +1,48 @@
+public class Cloud { // 10 pts.
+ public Cloud() {
+ lamps = new ArrayList<DomoticDevice>();
+ airConds = new ArrayList<DomoticDevice>(); // <--- New
+ }
+ public void addLamp(Lamp l){
+ lamps.add(l);
+ }
+ public void addAirConditioner(AirConditioner ac) { // <--- New
+ airConds.add(ac);
+ }
+ private DomoticDevice getDomoticDeviceAtChannel( ArrayList<DomoticDevice> devices, int channel){
+ for (DomoticDevice device: devices)
+ if (device.getChannel() ==channel)
+ return device;
+ return null;
+ }
+ public void changeLampPowerState(int channel) {
+ Lamp l=(Lamp) getDomoticDeviceAtChannel(lamps, channel);
+ if (l != null) l.changePowerState();
+ }
+ public void changeACpowerState(int channel) { // <--- New
+ AirConditioner ac = (AirConditioner) getDomoticDeviceAtChannel(airConds, channel);
+ if (ac != null) ac.changePowerState();
+ }
+ public void setACtemp(int channel, int temp) { // <--- New
+ AirConditioner ac = (AirConditioner) getDomoticDeviceAtChannel(airConds, channel);
+ if (ac != null) ac.setTemp(temp);
+ }
+ public String getHeaders() {
+ String header = "";
+ for (DomoticDevice l: lamps)
+ header += l.getHeader()+"\t";
+ for (DomoticDevice rs: airConds) // <--- New
+ header += rs.getHeader()+"\t";
+ return header;
+ }
+ public String getState() {
+ String state="";
+ for (DomoticDevice l: lamps) {
+ state += l+ "\t";
+ }
+ for (DomoticDevice rs: airConds) // <--- New
+ state += rs+"\t";
+ return state;
+ }
+ private ArrayList<DomoticDevice> airConds; // <--- New
+ private ArrayList<DomoticDevice> lamps;
